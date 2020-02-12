@@ -1,4 +1,4 @@
-# MERN Stack Boilerplate
+# ONLINE MARKET APP
 
 ## Setup
 
