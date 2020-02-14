@@ -8,9 +8,9 @@ var userSchema = new mongoose.Schema({
         type: String
     },
     ordered_quantity: {
-        type: Integer
+        type: Number
     }
 });
 
-var purchase = mongoose.model('purchase', userSchema);
-module.exports = purchase;
+var Purchase = mongoose.model('purchase', userSchema);
+module.exports = Purchase;

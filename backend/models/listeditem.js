@@ -10,15 +10,15 @@ var userSchema = new mongoose.Schema({
     },
     
     price:{
-        type: Integer
+        type: Number
     },
     
     minimum_quantity:{
-        type: Integer
+        type: Number
     },
     
     ordered_so_far:{
-        type: Integer
+        type: Number
     },
 
     dispatch_status:{
@@ -26,10 +26,10 @@ var userSchema = new mongoose.Schema({
     },
 
     rating: {
-        type: Integer
+        type: Number
     }
 
 });
 
-var listeditems = mongoose.model('listeditems', userSchema);
-module.exports = listeditems;
+var Listeditem = mongoose.model('listeditem', userSchema);
+module.exports = Listeditem;

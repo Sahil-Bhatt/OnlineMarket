@@ -1,24 +1,24 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import VendorLogin from "./vendor-login.component";
 
-
-
-export default class CreateVendor extends Component {
+export default class VendorLogin extends Component {
     
+    // products: [];
     constructor(props) {
         super(props);
 
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            // products: []
         }
 
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
+
     
     onChangeUsername(event) {
         this.setState({ username: event.target.value });
@@ -27,7 +27,7 @@ export default class CreateVendor extends Component {
     onChangePassword(event) {
         this.setState({ password: event.target.value });
     }
-    
+
 
     onSubmit(e) {
         e.preventDefault();
@@ -37,13 +37,22 @@ export default class CreateVendor extends Component {
             password: this.state.password
         }
 
-        axios.post('http://localhost:4000/addvendor', newVendor)
-             .then(res => console.log(res.data));
-
         this.setState({
             username: '',
             password: ''
         });
+
+        axios.get('http://localhost:4000/vpwdcheck/'+this.state.username)
+             .then(response => {
+                 this.setState({products: response.data});
+                 console.log(response.data[0].password)
+                //  console.log(products);
+             })
+             .catch(function(error) {
+                //  console.log("hi");
+                 console.log(error);
+             })
+
     }
 
     render() {
@@ -67,14 +76,14 @@ export default class CreateVendor extends Component {
                                />  
                     </div>
                     <div className="form-group">
-                        <input type="submit" value="Create Vendor" className="btn btn-primary"/>
+                        <input type="submit" value="Login" className="btn btn-primary"/>
                     </div>
                     <div className="form-group">
-                        <Link to="/vendorlogin" className="nav-link">Already have an account ? Login</Link>
+                        <Link to="/createvendor" className="nav-link">Don't have an account ? Register</Link>
+                        {/* <a href="/"><p>Already have an account ? Login</p></a> */}
                     </div>
                 </form>
             </div>
-
         )
     }
 }

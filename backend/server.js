@@ -9,6 +9,7 @@ const userRoutes = express.Router();
 
 let Vendor = require('./models/vendor');
 let Customer = require('./models/customer');
+let Listeditem = require('./models/listeditem');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -32,6 +33,38 @@ userRoutes.route('/').get(function(req, res) {
         }
     });
 });
+
+// Getting all the customers
+userRoutes.route('/getcustomer').get(function(req, res) {
+    Customer.find(function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(vendors);
+        }
+    });
+});
+
+// Getting all the products listed by vendor
+userRoutes.route('/getproducts').get(function(req, res) {
+    Listeditem.find(function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(vendors);
+        }
+    });
+});
+
+
+// Getting a user by id
+userRoutes.route('/:name').get(function(req, res) {
+    let name = req.params.name;
+    user = Vendor.find({"username": name});
+    res.json(user);
+});
+
+
 
 // Adding a new vendor
 userRoutes.route('/addvendor').post(function(req, res) {
@@ -58,12 +91,23 @@ userRoutes.route('/addcustomer').post(function(req, res) {
 });
 
 
+// Adding a new product
+userRoutes.route('/vendoraddproduct').post(function(req, res) {
+    let item = new Listeditem(req.body);
+    item.save()
+        .then(item => {
+            res.status(200).json({'Product': 'Product added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('Error');
+        });
+});
 
-// Getting a vendor by id
-userRoutes.route('/:id').get(function(req, res) {
-    let id = req.params.id;
-    Vendor.findById(id, function(err, vendor) {
-        res.json(vendor);
+// // Vendor password check
+userRoutes.route('/vpwdcheck/:name').get(function(req,res){
+    let name = req.params.name;
+    Vendor.find({"username":name},function(err, vendors) {
+        res.json(vendors);
     });
 });
 
