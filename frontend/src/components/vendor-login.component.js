@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
+import './global';
 
 export default class VendorLogin extends Component {
     
@@ -29,6 +30,30 @@ export default class VendorLogin extends Component {
     }
 
 
+    async retrievePassword() {
+
+        const response = await axios.get('http://localhost:4000/vpwdcheck/'+this.state.username);
+        if(this.state.password == response.data[0].password){
+                console.log(global.user);
+                global.user = this.state.username;
+                console.log(global.user);
+            }
+
+            //  .then(response => {
+            //     // console.log("entered" + enteredpassword);
+            //     console.log("actual" + response.data[0].password);
+            //      if(this.state.password == response.data[0].password){
+            //         console.log(global.user);
+            //         global.user = this.state.username;
+            //         console.log(global.user);
+            //     }
+            //  })
+            //  .catch(function(error) {
+            //     //  console.log("hi");
+            //      console.log(error);
+            //  })
+    }
+
     onSubmit(e) {
         e.preventDefault();
 
@@ -37,26 +62,22 @@ export default class VendorLogin extends Component {
             password: this.state.password
         }
 
-        this.setState({
-            username: '',
-            password: ''
-        });
+        // this.setState({
+        //     username: '',
+        //     password: ''
+        // });
 
-        axios.get('http://localhost:4000/vpwdcheck/'+this.state.username)
-             .then(response => {
-                 this.setState({products: response.data});
-                 console.log(response.data[0].password)
-                //  console.log(products);
-             })
-             .catch(function(error) {
-                //  console.log("hi");
-                 console.log(error);
-             })
+        // var enteredpassword = this.state.password;
+
+        this.retrievePassword();
+
+        
 
     }
 
     render() {
         return (
+            
             <div>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
@@ -81,6 +102,9 @@ export default class VendorLogin extends Component {
                     <div className="form-group">
                         <Link to="/createvendor" className="nav-link">Don't have an account ? Register</Link>
                         {/* <a href="/"><p>Already have an account ? Login</p></a> */}
+                    </div>
+                    <div>
+                        <p>{global.user}</p>
                     </div>
                 </form>
             </div>

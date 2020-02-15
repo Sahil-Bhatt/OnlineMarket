@@ -7,6 +7,7 @@ import CreateCustomer from './components/create-customer.component';
 import ListeditemList from './components/listproduct.component';
 import ListAnItem from './components/listanitem.component';
 import VendorLogin from './components/vendor-login.component';
+import ViewItem from './components/customerviewproduct.component';
 
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
               <li className="navbar-item">
                 <Link to="/listme" className="nav-link">List-item</Link>
               </li>
+              <li className="navbar-item">
+                <Link to="/viewitems" className="nav-link">View-items</Link>
+              </li>
             </ul>
           </div>
         </nav>
@@ -39,7 +43,7 @@ function App() {
         <Route path="/listproduct" component={ListeditemList}/>
         <Route path="/listme" component={ListAnItem}/>
         <Route path="/vendorlogin" component={VendorLogin}/>
-
+        <Route path="/viewitems" component={ViewItem}/>
       </div>
     </Router>
   );

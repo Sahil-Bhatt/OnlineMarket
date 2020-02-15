@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import './global';
 
 export default class ListAnItem extends Component {
     
@@ -38,7 +39,7 @@ export default class ListAnItem extends Component {
         e.preventDefault();
 
         const newProduct = {
-            sellername: "Hiteshbhai Choksi",
+            sellername: global.user,
             productname: this.state.productname,
             price: this.state.price,
             minimum_quantity: this.state.minimum_quantity,
@@ -87,6 +88,9 @@ export default class ListAnItem extends Component {
                     </div>
                     <div className="form-group">
                         <input type="submit" value="Create Product" className="btn btn-primary"/>
+                    </div>
+                    <div>
+                        <p>{global.user}</p>
                     </div>
                 </form>
             </div>
