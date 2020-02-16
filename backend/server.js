@@ -111,6 +111,31 @@ userRoutes.route('/vpwdcheck/:name').get(function(req,res){
     });
 });
 
+// Cancelling a product
+userRoutes.route('/cancelproduct/:name').post(function(req, res) {
+    let item = req.params.name;
+    console.log(item);
+    Listeditem.deleteOne({"productname":item},function(err, vendors) {
+        // res.json(vendors);
+        if (err) throw err;
+        console.log("1 document deleted");
+    });
+});
+
+
+// Dispatching a product
+userRoutes.route('/dispatchproduct/:name').post(function(req, res) {
+    let item = req.params.name;
+    console.log(item);
+    var myquery = { "productname": item };
+    var newvalues = { $set: {"dispatch_status": "Dispatched"} };
+    Listeditem.updateOne(myquery,newvalues,function(err, vendors) {
+        // res.json(vendors);
+        if (err) throw err;
+        console.log("1 document updated");
+    });
+});
+
 app.use('/', userRoutes);
 
 app.listen(PORT, function() {

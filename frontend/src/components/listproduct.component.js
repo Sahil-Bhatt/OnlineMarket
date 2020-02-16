@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import { Table, Button, Alert } from 'react-bootstrap';
 
 export default class ListeditemList extends Component {
     
@@ -17,6 +18,35 @@ export default class ListeditemList extends Component {
                  console.log(error);
              })
     }
+
+
+  cancelProduct(productname) {
+
+    axios.post('http://localhost:4000/cancelproduct/'+productname)
+             .then(res => console.log(res.data));
+
+    axios.get('http://localhost:4000/getproducts')
+    .then(response => {
+        this.setState({products: response.data});
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+  }
+
+  dispatchProduct(productname) {
+
+    axios.post('http://localhost:4000/dispatchproduct/'+productname)
+             .then(res => console.log(res.data));
+
+    axios.get('http://localhost:4000/getproducts')
+    .then(response => {
+        this.setState({products: response.data});
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+  }
 
     render() {
         return (
@@ -39,6 +69,10 @@ export default class ListeditemList extends Component {
                                     <td>{response.minimum_quantity}</td>
                                     <td>{response.price}</td>
                                     <td>{response.dispatch_status}</td>
+                                    <td>
+                                    <Button variant="info" onClick={() => this.dispatchProduct(response.productname)}>Dispatch</Button>
+                                    &nbsp;<Button variant="danger" onClick={() => this.cancelProduct(response.productname)}>Cancel</Button>
+                                    </td>
                                 </tr>
                             )
                         })
