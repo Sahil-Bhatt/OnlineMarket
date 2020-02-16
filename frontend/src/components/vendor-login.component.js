@@ -5,14 +5,12 @@ import './global';
 
 export default class VendorLogin extends Component {
     
-    // products: [];
     constructor(props) {
         super(props);
 
         this.state = {
             username: '',
             password: '',
-            // products: []
         }
 
         this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -38,26 +36,13 @@ export default class VendorLogin extends Component {
                 console.log(global.user);
                 global.user = this.state.username;
                 console.log(global.user);
-                // window.open('http://localhost:3000/listproduct',"_self");
+                sessionStorage.setItem("uname", global.user );
+                window.open('http://localhost:3000/listproduct',"_self");
         }
         else
         {
             window.alert("You've entered the wrong password or username");
         }
-
-            //  .then(response => {
-            //     // console.log("entered" + enteredpassword);
-            //     console.log("actual" + response.data[0].password);
-            //      if(this.state.password == response.data[0].password){
-            //         console.log(global.user);
-            //         global.user = this.state.username;
-            //         console.log(global.user);
-            //     }
-            //  })
-            //  .catch(function(error) {
-            //     //  console.log("hi");
-            //      console.log(error);
-            //  })
     }
 
     onSubmit(e) {
@@ -68,18 +53,8 @@ export default class VendorLogin extends Component {
             password: this.state.password
         }
 
-        // this.setState({
-        //     username: '',
-        //     password: ''
-        // });
-
-        // var enteredpassword = this.state.password;
-
         this.retrievePassword();
-        // this.render();
-
         
-
     }
 
     render() {
@@ -108,11 +83,7 @@ export default class VendorLogin extends Component {
                     </div>
                     <div className="form-group">
                         <Link to="/createvendor" className="nav-link">Don't have an account ? Register</Link>
-                        {/* <a href="/"><p>Already have an account ? Login</p></a> */}
                     </div>
-                    {/* <div>
-                        <p>{global.user}</p>
-                    </div> */}
                 </form>
             </div>
         )

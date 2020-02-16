@@ -39,7 +39,7 @@ export default class CustomerLogin extends Component {
                 console.log(global.user);
                 this.setState({curuser: global.user});
                 sessionStorage.setItem("uname", global.user );
-                window.open('http://localhost:3000/listproduct',"_self");
+                window.open('http://localhost:3000/viewitems',"_self");
         }
         else
         {

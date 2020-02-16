@@ -13,6 +13,7 @@ export default class ListAnItem extends Component {
             price: 0,
             minimum_quantity: 0,
             dispatch_status: '',
+            pimage: './product.png',
             rating: 0,
             ordered_so_far: 0
         }
@@ -20,6 +21,7 @@ export default class ListAnItem extends Component {
         this.onChangeProductname = this.onChangeProductname.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeQty = this.onChangeQty.bind(this);
+        this.onChangeImg = this.onChangeImg.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
     
@@ -35,6 +37,10 @@ export default class ListAnItem extends Component {
         this.setState({ minimum_quantity: event.target.value });
     }
 
+    onChangeImg(event) {
+        this.setState({ pimage: event.target.value });
+    }
+
     onSubmit(e) {
         e.preventDefault();
 
@@ -44,6 +50,7 @@ export default class ListAnItem extends Component {
             price: this.state.price,
             minimum_quantity: this.state.minimum_quantity,
             dispatch_status: "Listed",
+            pimage: this.state.pimage,
             rating: 0,
             ordered_so_far: 0
         }
@@ -61,8 +68,6 @@ export default class ListAnItem extends Component {
     render() {
         return (
             <div>
-                {/* <p value={this.state.something}
-                 onChange={event => {this.setState({'something': event.target.value})}}/> */}
                 <p>Logged In as: {sessionStorage.getItem("uname")}</p>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
@@ -87,6 +92,14 @@ export default class ListAnItem extends Component {
                                className="form-control" 
                                value={this.state.minimum_quantity}
                                onChange={this.onChangeQty}
+                               />  
+                    </div>
+                    <div className="form-group">
+                        <label>Image path: </label>
+                        <input type="text" 
+                               className="form-control" 
+                               value={this.state.pimage}
+                               onChange={this.onChangeImg}
                                />  
                     </div>
                     <div className="form-group">

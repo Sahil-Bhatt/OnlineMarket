@@ -59,12 +59,11 @@ export default class ListeditemList extends Component {
         return (
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
-                {/* <p value={this.state.something}
-                 onChange={event => {this.setState({'something': event.target.value})}}/> */}
-                {/* <table className="table table-striped "> */}
+                {/* <img src={require('./almonds.jpg')}></img> */}
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
+                            <th>Image</th>
                             <th>Product</th>
                             <th>Minimum Quantity</th>
                             <th>Price</th>
@@ -76,6 +75,7 @@ export default class ListeditemList extends Component {
                         this.state.products.map((response, i) => {
                             return (
                                 <tr>
+                                    <td><img src={require(`${response.pimage}`)} width="100" height="70"></img></td>
                                     <td>{response.productname}</td>
                                     <td>{response.minimum_quantity}</td>
                                     <td>{response.price}</td>
@@ -89,10 +89,9 @@ export default class ListeditemList extends Component {
                         })
                     }
                     </tbody>
-                {/* </table> */}
                 </Table>
+                <Button variant="warning" onClick={() => window.open("http://localhost:3000/listme","_self")}>List a new item </Button>
             </div>
-            
         )
     }
 }
