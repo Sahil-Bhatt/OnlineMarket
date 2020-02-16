@@ -61,6 +61,9 @@ export default class ListAnItem extends Component {
     render() {
         return (
             <div>
+                {/* <p value={this.state.something}
+                 onChange={event => {this.setState({'something': event.target.value})}}/> */}
+                <p>Logged In as: {sessionStorage.getItem("uname")}</p>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Product: </label>
@@ -88,9 +91,6 @@ export default class ListAnItem extends Component {
                     </div>
                     <div className="form-group">
                         <input type="submit" value="Create Product" className="btn btn-primary"/>
-                    </div>
-                    <div>
-                        <p>{global.user}</p>
                     </div>
                 </form>
             </div>

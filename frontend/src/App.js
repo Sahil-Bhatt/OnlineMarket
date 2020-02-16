@@ -8,13 +8,14 @@ import ListeditemList from './components/listproduct.component';
 import ListAnItem from './components/listanitem.component';
 import VendorLogin from './components/vendor-login.component';
 import ViewItem from './components/customerviewproduct.component';
+import CustomerLogin from './components/customer-login.component';
 
 
 function App() {
   return (
     <Router>
       <div className="container">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <Link to="/" className="navbar-brand">OnlineMarket</Link>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
@@ -44,6 +45,7 @@ function App() {
         <Route path="/listme" component={ListAnItem}/>
         <Route path="/vendorlogin" component={VendorLogin}/>
         <Route path="/viewitems" component={ViewItem}/>
+        <Route path="/customerlogin" component={CustomerLogin}/>
       </div>
     </Router>
   );

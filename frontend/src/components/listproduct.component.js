@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import { Table, Button, Alert } from 'react-bootstrap';
+import './global';
 
 export default class ListeditemList extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {products: []}
+        this.state = {
+            products: [],
+            tempvar:sessionStorage.getItem("uname")
+        }
     }
 
     componentDidMount() {
@@ -17,6 +21,9 @@ export default class ListeditemList extends Component {
              .catch(function(error) {
                  console.log(error);
              })
+        // global.user = Request.QueryString["myvar"];
+        console.log(global.user);
+        // this.setState({tempvar:global.user});
     }
 
 
@@ -51,7 +58,11 @@ export default class ListeditemList extends Component {
     render() {
         return (
             <div>
-                <table className="table table-striped">
+                <p>Logged In as: {this.state.tempvar}</p>
+                {/* <p value={this.state.something}
+                 onChange={event => {this.setState({'something': event.target.value})}}/> */}
+                {/* <table className="table table-striped "> */}
+                <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
                             <th>Product</th>
@@ -70,7 +81,7 @@ export default class ListeditemList extends Component {
                                     <td>{response.price}</td>
                                     <td>{response.dispatch_status}</td>
                                     <td>
-                                    <Button variant="info" onClick={() => this.dispatchProduct(response.productname)}>Dispatch</Button>
+                                    <Button variant="success" onClick={() => this.dispatchProduct(response.productname)}>Dispatch</Button>
                                     &nbsp;<Button variant="danger" onClick={() => this.cancelProduct(response.productname)}>Cancel</Button>
                                     </td>
                                 </tr>
@@ -78,7 +89,8 @@ export default class ListeditemList extends Component {
                         })
                     }
                     </tbody>
-                </table>
+                {/* </table> */}
+                </Table>
             </div>
             
         )

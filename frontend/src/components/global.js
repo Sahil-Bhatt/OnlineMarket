@@ -1,1 +1,1 @@
-global.user = "Sahil";
+global.user = "Not Logged In";

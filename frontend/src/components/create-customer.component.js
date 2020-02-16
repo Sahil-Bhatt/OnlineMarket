@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 
 export default class CreateCustomer extends Component {
     
@@ -63,6 +65,9 @@ export default class CreateCustomer extends Component {
                     </div>
                     <div className="form-group">
                         <input type="submit" value="Create Customer" className="btn btn-primary"/>
+                    </div>
+                    <div className="form-group">
+                        <Link to="/customerlogin" className="nav-link">Already have an account ? Login</Link>
                     </div>
                 </form>
             </div>

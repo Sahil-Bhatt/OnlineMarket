@@ -111,6 +111,15 @@ userRoutes.route('/vpwdcheck/:name').get(function(req,res){
     });
 });
 
+// // Customer password check
+userRoutes.route('/cpwdcheck/:name').get(function(req,res){
+    let name = req.params.name;
+    Customer.find({"username":name},function(err, vendors) {
+        res.json(vendors);
+    });
+});
+
+
 // Cancelling a product
 userRoutes.route('/cancelproduct/:name').post(function(req, res) {
     let item = req.params.name;

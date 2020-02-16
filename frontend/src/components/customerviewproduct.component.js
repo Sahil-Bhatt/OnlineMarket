@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import './global';
+import { ListGroup, ListGroupItem, Card} from 'react-bootstrap';
 // import React, { Component } from 'react';
 export default class ViewItem extends React.Component {
     state = {
@@ -48,6 +49,14 @@ export default class ViewItem extends React.Component {
     render() {
       return (
         <div className="searchForm">
+            <Card bg="dark" text="white" style={{ width: '17rem' }}>
+              <Card.Body>
+                <Card.Text>
+                  Logged in as : {sessionStorage.getItem("uname")}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+            <br></br>
           <form>
             <input
               placeholder="Search for..."
@@ -55,7 +64,9 @@ export default class ViewItem extends React.Component {
               onChange={this.handleInputChange}
             />
           </form>
-          <div>{this.state.filteredData.map(i => <p>{i.productname}</p>)}</div>
+          <div>
+          <ListGroup>
+          {this.state.filteredData.map(i => <ListGroup.Item variant="dark">{i.productname}</ListGroup.Item>)}</ListGroup></div>
         </div>
       );
     }
