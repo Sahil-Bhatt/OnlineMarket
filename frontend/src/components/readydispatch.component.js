@@ -14,22 +14,34 @@ export default class ListeditemList extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)
+        axios.get('http://localhost:4000/getreadyproducts/'+this.state.tempvar)
              .then(response => {
                  this.setState({products: response.data});
              })
              .catch(function(error) {
                  console.log(error);
              })
-        // global.user = Request.QueryString["myvar"];
         console.log(global.user);
-        // this.setState({tempvar:global.user});
     }
 
 
   cancelProduct(productname) {
 
     axios.post('http://localhost:4000/cancelproduct/'+productname)
+             .then(res => console.log(res.data));
+
+    axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)
+    .then(response => {
+        this.setState({products: response.data});
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+  }
+
+  dispatchProduct(productname) {
+
+    axios.post('http://localhost:4000/dispatchproduct/'+productname)
              .then(res => console.log(res.data));
 
     axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)
@@ -68,7 +80,8 @@ export default class ListeditemList extends Component {
                                     <td>{response.dispatch_status}</td>
                                     <td>{response.ordered_so_far}</td>
                                     <td>
-                                    <Button variant="danger" onClick={() => this.cancelProduct(response.productname)}>Cancel</Button>
+                                    <Button variant="success" onClick={() => this.dispatchProduct(response.productname)}>Dispatch</Button>
+                                    &nbsp;<Button variant="danger" onClick={() => this.cancelProduct(response.productname)}>Cancel</Button>
                                     </td>
                                 </tr>
                             )
@@ -76,8 +89,6 @@ export default class ListeditemList extends Component {
                     }
                     </tbody>
                 </Table>
-                <Button variant="warning" onClick={() => window.open("http://localhost:3000/listme","_self")}>List a new item </Button>
-                &nbsp;<Button variant="danger" onClick={() => window.open("http://localhost:3000/ready","_self")}>View Ready to Dispatch items</Button>
                 <Button variant="success" onClick={() => window.open("http://localhost:3000/dispatchrender","_self")}>View Dispatched Items</Button>
             </div>
         )

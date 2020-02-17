@@ -91,6 +91,19 @@ export default class ChooseProduct extends Component {
         // console.log(this.state.ordered_so_far);
         axios.post('http://localhost:4000/vendororder',Package)
              .then(res => console.log(res.data));
+
+        const Purchase = {
+            productname : this.state.productname,
+            sellername : this.state.sellername,
+            buyername : this.state.tempvar,
+            pimage : this.state.pimage,
+            dispatch_status : this.state.dispatch_status,
+            quantity : this.state.quantity,
+            minimum_quantity : this.state.minimum_quantity
+        }
+
+        axios.post('http://localhost:4000/addpurchase',Purchase)
+            .then(res => console.log(res.data));
         
     }
 
@@ -102,6 +115,7 @@ export default class ChooseProduct extends Component {
                 <p>Vendor : {this.state.sellername}</p>
                 <input type="number" value={this.state.quantity} onChange={this.onChangeQty}/> 
                 <Button variant="success" onClick={() => this.cartAdd()}>Add to Cart</Button>
+                <Button variant="primary" onClick={() => window.open("http://localhost:3000/displaycart","_self")}>View Cart</Button>
             </div>
         )
     }

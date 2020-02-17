@@ -10,6 +10,9 @@ import VendorLogin from './components/vendor-login.component';
 import ViewItem from './components/customerviewproduct.component';
 import CustomerLogin from './components/customer-login.component';
 import ChooseProduct from './components/customerchooseproduct.component';
+import ReadyDispatch from './components/readydispatch.component';
+import DispatchRender from './components/dispatchrender.component';
+import DisplayCart from './components/displaycart.component';
 
 
 function App() {
@@ -48,6 +51,9 @@ function App() {
         <Route path="/viewitems" component={ViewItem}/>
         <Route path="/customerlogin" component={CustomerLogin}/>
         <Route path="/custchooseproduct" component={ChooseProduct}/>
+        <Route path="/ready" component={ReadyDispatch}/>
+        <Route path="/dispatchrender" component={DispatchRender}/>
+        <Route path="/displaycart" component={DisplayCart}/>
       </div>
     </Router>
   );

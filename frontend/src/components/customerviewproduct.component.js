@@ -87,7 +87,7 @@ export default class ViewItem extends React.Component {
                                     <td>{response.productname}</td>
                                     <td>{response.sellername}</td>
                                     <td>{response.price}</td>
-                                    <td>{response.ordered_so_far}</td>
+                                    <td>{response.minimum_quantity - response.ordered_so_far}</td>
                                     <Button variant="success" onClick={() => this.viewProduct(response.productname,response.sellername)}>See Product</Button>
                                 </tr>
                             )
@@ -95,10 +95,6 @@ export default class ViewItem extends React.Component {
                     }
                     </tbody>
                 </Table>
-
-          {/* <ListGroup>
-          {this.state.filteredData.map(i => 
-          <ListGroup.Item variant="dark">{i.productname}  {i.sellername} {i.ordered_so_far} </ListGroup.Item>)}</ListGroup></div> */}
         </div>
         </div>
       );

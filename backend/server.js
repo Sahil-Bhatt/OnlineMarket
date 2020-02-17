@@ -10,6 +10,7 @@ const userRoutes = express.Router();
 let Vendor = require('./models/vendor');
 let Customer = require('./models/customer');
 let Listeditem = require('./models/listeditem');
+let Productbuy = require('./models/productbuy');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -63,7 +64,7 @@ userRoutes.route('/getorderdetails').post(function(req, res) {
 
 // Getting all the products listed for Customer view
 userRoutes.route('/getproductlist').get(function(req, res) {
-    Listeditem.find(function(err, vendors) {
+    Listeditem.find({"dispatch_status" : "Listed"},function(err, vendors) {
         if (err) {
             console.log(err);
         } else {
@@ -77,7 +78,31 @@ userRoutes.route('/getproductlist').get(function(req, res) {
 // Getting all the products listed by a particular vendor
 userRoutes.route('/getproducts/:name').get(function(req, res) {
     let name = req.params.name;
-    Listeditem.find({"sellername":name},function(err, vendors) {
+    Listeditem.find({"sellername":name, "dispatch_status" : "Listed"},function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(vendors);
+        }
+    });
+});
+
+// Getting all the READY TO DISPATCH products listed by a particular vendor
+userRoutes.route('/getreadyproducts/:name').get(function(req, res) {
+    let name = req.params.name;
+    Listeditem.find({"sellername":name , "dispatch_status" : "Ready"},function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(vendors);
+        }
+    });
+});
+
+// Getting all the DISPATCHED products listed by a particular vendor
+userRoutes.route('/getreadyproducts/:name').get(function(req, res) {
+    let name = req.params.name;
+    Listeditem.find({"sellername":name , "dispatch_status" : "Dispatched"},function(err, vendors) {
         if (err) {
             console.log(err);
         } else {
@@ -133,6 +158,33 @@ userRoutes.route('/vendoraddproduct').post(function(req, res) {
         });
 });
 
+
+//Adding a Purchase
+userRoutes.route('/addpurchase').post(function(req, res) {
+    let purchase = new Productbuy(req.body);
+    purchase.save()
+        .then(customer => {
+            res.status(200).json({'Purchase': 'Purchase recorded successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('Error');
+        });
+});
+
+
+// Getting all the products listed for Customer view
+userRoutes.route('/getpurchase/:name').get(function(req, res) {
+    let name = req.params.name;
+    Productbuy.find({"buyername" : name},function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(vendors);
+        }
+    });
+});
+
+
 // // Vendor password check
 userRoutes.route('/vpwdcheck/:name').get(function(req,res){
     let name = req.params.name;
@@ -153,7 +205,7 @@ userRoutes.route('/cpwdcheck/:name').get(function(req,res){
 // Cancelling a product
 userRoutes.route('/cancelproduct/:productname').post(function(req, res) {
     let item = req.params.productname;
-    Listeditem.deleteOne({"productname":item},function(err, vendors) {
+    Listeditem.updateOne({"productname":item},{ $set: {"dispatch_status": "Cancelled"} },function(err, vendors) {
         if (err) throw err;
         console.log("1 document deleted");
     });
@@ -176,8 +228,12 @@ userRoutes.route('/dispatchproduct/:productname').post(function(req, res) {
 userRoutes.route('/vendororder').post(function(req, res) {
     let pro = new Listeditem(req.body);
     console.log(pro);
+    if(pro.ordered_so_far == pro.minimum_quantity)
+    {
+        pro.dispatch_status = "Ready";
+    }
     var myquery = {"productname": pro.productname, "sellername" : pro.sellername};
-    var newvalues = {$set:  {"ordered_so_far" : pro.ordered_so_far}};
+    var newvalues = {$set:  {"ordered_so_far" : pro.ordered_so_far, "dispatch_status" : pro.dispatch_status}};
     Listeditem.updateOne(myquery,newvalues,function(err, vendors) {
         if (err) throw err;
         console.log("1 document updated");
