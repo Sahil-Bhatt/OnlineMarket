@@ -45,6 +45,21 @@ userRoutes.route('/getcustomer').get(function(req, res) {
     });
 });
 
+// Sample
+userRoutes.route('/getorderdetails').post(function(req, res) {
+    let orderupdate = new Listeditem(req.body);
+    let pro = orderupdate.productname;
+    let sell = orderupdate.sellername;
+    Listeditem.find({"productname":pro,"sellername":sell},function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(vendors);
+        }
+    });
+});
+
+
 
 // Getting all the products listed for Customer view
 userRoutes.route('/getproductlist').get(function(req, res) {
@@ -138,8 +153,6 @@ userRoutes.route('/cpwdcheck/:name').get(function(req,res){
 // Cancelling a product
 userRoutes.route('/cancelproduct/:productname').post(function(req, res) {
     let item = req.params.productname;
-    // let seller = req.params.sellername;
-    // console.log(item);
     Listeditem.deleteOne({"productname":item},function(err, vendors) {
         if (err) throw err;
         console.log("1 document deleted");
@@ -149,12 +162,7 @@ userRoutes.route('/cancelproduct/:productname').post(function(req, res) {
 
 // Dispatching a product
 userRoutes.route('/dispatchproduct/:productname').post(function(req, res) {
-    // console.log(req.body);
     let item = req.params.productname;
-    // console.log(item);
-    // let seller = req.body.sellername;
-    // console.log(seller);
-    // console.log(item);
     var myquery = { "productname": item };
     var newvalues = { $set: {"dispatch_status": "Dispatched"} };
     Listeditem.updateOne(myquery,newvalues,function(err, vendors) {
@@ -162,6 +170,20 @@ userRoutes.route('/dispatchproduct/:productname').post(function(req, res) {
         console.log("1 document updated");
     });
 });
+
+
+// Updating vendor ordered so far
+userRoutes.route('/vendororder').post(function(req, res) {
+    let pro = new Listeditem(req.body);
+    console.log(pro);
+    var myquery = {"productname": pro.productname, "sellername" : pro.sellername};
+    var newvalues = {$set:  {"ordered_so_far" : pro.ordered_so_far}};
+    Listeditem.updateOne(myquery,newvalues,function(err, vendors) {
+        if (err) throw err;
+        console.log("1 document updated");
+    });
+});
+
 
 app.use('/', userRoutes);
 

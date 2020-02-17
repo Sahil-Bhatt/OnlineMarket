@@ -67,6 +67,7 @@ export default class ListeditemList extends Component {
                             <th>Minimum Quantity</th>
                             <th>Price</th>
                             <th>Dispatch status</th>
+                            <th>Quantity ordered so far</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,6 +80,7 @@ export default class ListeditemList extends Component {
                                     <td>{response.minimum_quantity}</td>
                                     <td>{response.price}</td>
                                     <td>{response.dispatch_status}</td>
+                                    <td>{response.ordered_so_far}</td>
                                     <td>
                                     <Button variant="success" onClick={() => this.dispatchProduct(response.productname)}>Dispatch</Button>
                                     &nbsp;<Button variant="danger" onClick={() => this.cancelProduct(response.productname)}>Cancel</Button>
