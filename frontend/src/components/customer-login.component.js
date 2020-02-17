@@ -38,7 +38,7 @@ export default class CustomerLogin extends Component {
                 global.user = this.state.username;
                 console.log(global.user);
                 this.setState({curuser: global.user});
-                sessionStorage.setItem("uname", global.user );
+                localStorage.setItem("uname", global.user );
                 window.open('http://localhost:3000/viewitems',"_self");
         }
         else

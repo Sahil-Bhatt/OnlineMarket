@@ -9,6 +9,7 @@ import ListAnItem from './components/listanitem.component';
 import VendorLogin from './components/vendor-login.component';
 import ViewItem from './components/customerviewproduct.component';
 import CustomerLogin from './components/customer-login.component';
+import ChooseProduct from './components/customerchooseproduct.component';
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path="/vendorlogin" component={VendorLogin}/>
         <Route path="/viewitems" component={ViewItem}/>
         <Route path="/customerlogin" component={CustomerLogin}/>
+        <Route path="/custchooseproduct" component={ChooseProduct}/>
       </div>
     </Router>
   );

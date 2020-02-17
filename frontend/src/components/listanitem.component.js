@@ -45,7 +45,7 @@ export default class ListAnItem extends Component {
         e.preventDefault();
 
         const newProduct = {
-            sellername: global.user,
+            sellername: localStorage.getItem("uname"),
             productname: this.state.productname,
             price: this.state.price,
             minimum_quantity: this.state.minimum_quantity,
@@ -68,7 +68,7 @@ export default class ListAnItem extends Component {
     render() {
         return (
             <div>
-                <p>Logged In as: {sessionStorage.getItem("uname")}</p>
+                <p>Logged In as: {localStorage.getItem("uname")}</p>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Product: </label>

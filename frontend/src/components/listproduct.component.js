@@ -9,12 +9,12 @@ export default class ListeditemList extends Component {
         super(props);
         this.state = {
             products: [],
-            tempvar:sessionStorage.getItem("uname")
+            tempvar:localStorage.getItem("uname")
         }
     }
 
     componentDidMount() {
-        axios.get('http://localhost:4000/getproducts')
+        axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)
              .then(response => {
                  this.setState({products: response.data});
              })
@@ -32,7 +32,7 @@ export default class ListeditemList extends Component {
     axios.post('http://localhost:4000/cancelproduct/'+productname)
              .then(res => console.log(res.data));
 
-    axios.get('http://localhost:4000/getproducts')
+    axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)
     .then(response => {
         this.setState({products: response.data});
     })
@@ -46,7 +46,7 @@ export default class ListeditemList extends Component {
     axios.post('http://localhost:4000/dispatchproduct/'+productname)
              .then(res => console.log(res.data));
 
-    axios.get('http://localhost:4000/getproducts')
+    axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)
     .then(response => {
         this.setState({products: response.data});
     })
@@ -59,7 +59,6 @@ export default class ListeditemList extends Component {
         return (
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
-                {/* <img src={require('./almonds.jpg')}></img> */}
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>

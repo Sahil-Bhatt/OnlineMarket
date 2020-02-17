@@ -45,9 +45,24 @@ userRoutes.route('/getcustomer').get(function(req, res) {
     });
 });
 
-// Getting all the products listed by vendor
-userRoutes.route('/getproducts').get(function(req, res) {
+
+// Getting all the products listed for Customer view
+userRoutes.route('/getproductlist').get(function(req, res) {
     Listeditem.find(function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(vendors);
+        }
+    });
+});
+
+
+
+// Getting all the products listed by a particular vendor
+userRoutes.route('/getproducts/:name').get(function(req, res) {
+    let name = req.params.name;
+    Listeditem.find({"sellername":name},function(err, vendors) {
         if (err) {
             console.log(err);
         } else {
@@ -121,11 +136,11 @@ userRoutes.route('/cpwdcheck/:name').get(function(req,res){
 
 
 // Cancelling a product
-userRoutes.route('/cancelproduct/:name').post(function(req, res) {
-    let item = req.params.name;
-    console.log(item);
+userRoutes.route('/cancelproduct/:productname').post(function(req, res) {
+    let item = req.params.productname;
+    // let seller = req.params.sellername;
+    // console.log(item);
     Listeditem.deleteOne({"productname":item},function(err, vendors) {
-        // res.json(vendors);
         if (err) throw err;
         console.log("1 document deleted");
     });
@@ -133,13 +148,16 @@ userRoutes.route('/cancelproduct/:name').post(function(req, res) {
 
 
 // Dispatching a product
-userRoutes.route('/dispatchproduct/:name').post(function(req, res) {
-    let item = req.params.name;
-    console.log(item);
+userRoutes.route('/dispatchproduct/:productname').post(function(req, res) {
+    // console.log(req.body);
+    let item = req.params.productname;
+    // console.log(item);
+    // let seller = req.body.sellername;
+    // console.log(seller);
+    // console.log(item);
     var myquery = { "productname": item };
     var newvalues = { $set: {"dispatch_status": "Dispatched"} };
     Listeditem.updateOne(myquery,newvalues,function(err, vendors) {
-        // res.json(vendors);
         if (err) throw err;
         console.log("1 document updated");
     });
