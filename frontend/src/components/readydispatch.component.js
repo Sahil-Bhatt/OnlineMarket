@@ -26,6 +26,13 @@ export default class ListeditemList extends Component {
     }
 
 
+    getBack()
+    {
+        localStorage.setItem("uname", "Not Logged In");
+        window.alert("You've been logged out");
+        window.open("http://localhost:3000/","_self");
+    }
+
   cancelProduct(productname) {
     
     const CancelPkg = {
@@ -67,6 +74,7 @@ export default class ListeditemList extends Component {
         return (
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
+                &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>

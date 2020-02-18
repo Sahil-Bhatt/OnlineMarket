@@ -54,6 +54,13 @@ export default class ChooseProduct extends Component {
              })
     }
 
+    getBack()
+    {
+        localStorage.setItem("uname", "Not Logged In");
+        window.alert("You've been logged out");
+        window.open("http://localhost:3000/","_self");
+    }
+
     cartAdd(){
         
         console.log(parseInt(this.state.minimum_quantity));
@@ -112,6 +119,7 @@ export default class ChooseProduct extends Component {
         return (
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
+                &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
                 <p>Product : {this.state.productname}</p>
                 <p>Vendor : {this.state.sellername}</p>
                 <input type="number" value={this.state.quantity} onChange={this.onChangeQty}/> 

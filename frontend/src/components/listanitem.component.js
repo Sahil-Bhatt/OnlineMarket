@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './global';
+import { Table, Button, Alert } from 'react-bootstrap';
 
 export default class ListAnItem extends Component {
     
@@ -65,10 +66,18 @@ export default class ListAnItem extends Component {
         });
     }
 
+    getBack()
+    {
+        localStorage.setItem("uname", "Not Logged In");
+        window.alert("You've been logged out");
+        window.open("http://localhost:3000/","_self");
+    }
+
     render() {
         return (
             <div>
                 <p>Logged In as: {localStorage.getItem("uname")}</p>
+                &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Product: </label>

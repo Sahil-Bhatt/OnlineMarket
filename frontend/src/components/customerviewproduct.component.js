@@ -26,6 +26,13 @@ export default class ViewItem extends React.Component {
       });
     };
 
+    getBack()
+    {
+        localStorage.setItem("uname", "Not Logged In");
+        window.alert("You've been logged out");
+        window.open("http://localhost:3000/","_self");
+    }
+
     viewProduct(productname,sellername)
     {
       window.location.href = "http://localhost:3000/custchooseproduct?pro="+productname+"&sell="+sellername;
@@ -54,13 +61,9 @@ export default class ViewItem extends React.Component {
     render() {
       return (
         <div className="searchForm">
-            <Card bg="dark" text="white" style={{ width: '17rem' }}>
-              <Card.Body>
-                <Card.Text>
-                  Logged in as : {localStorage.getItem("uname")}
-                </Card.Text>
-              </Card.Body>
-            </Card>
+            <p>Logged In as: {localStorage.getItem("uname")}</p>
+            <Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
+            <br></br>
             <br></br>
           <form>
             <input

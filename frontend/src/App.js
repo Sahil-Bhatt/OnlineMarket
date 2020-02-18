@@ -29,15 +29,6 @@ function App() {
               <li className="navbar-item">
                 <Link to="/createcustomer" className="nav-link">Customer</Link>
               </li>
-              {/* <li className="navbar-item">
-                <Link to="/listproduct" className="nav-link">Products</Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/listme" className="nav-link">List-item</Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/viewitems" className="nav-link">View-items</Link>
-              </li> */}
             </ul>
           </div>
         </nav>

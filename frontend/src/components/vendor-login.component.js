@@ -31,7 +31,12 @@ export default class VendorLogin extends Component {
     async retrievePassword() {
 
         const response = await axios.get('http://localhost:4000/vpwdcheck/'+this.state.username);
-        if(this.state.password == response.data[0].password)
+        console.log(response.data);
+        if(Object.keys(response.data).length === 0)
+        {
+            window.alert("Vendor not found");
+        }
+        else if(this.state.password == response.data[0].password)
         {
                 console.log(global.user);
                 global.user = this.state.username;

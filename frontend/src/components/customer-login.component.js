@@ -32,7 +32,12 @@ export default class CustomerLogin extends Component {
     async retrievePassword() {
 
         const response = await axios.get('http://localhost:4000/cpwdcheck/'+this.state.username);
-        if(this.state.password == response.data[0].password)
+        console.log(response.data);
+        if(Object.keys(response.data).length === 0)
+        {
+            window.alert("Customer not found");
+        }
+        else if(this.state.password == response.data[0].password)
         {
                 console.log(global.user);
                 global.user = this.state.username;
