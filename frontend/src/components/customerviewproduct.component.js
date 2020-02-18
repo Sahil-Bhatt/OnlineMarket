@@ -53,7 +53,29 @@ export default class ViewItem extends React.Component {
           });
         });
     };
-  
+
+    compare(a, b) {
+      const priceA = parseInt(a.price);
+      const priceB = parseInt(b.price);
+    
+      let comparison = 0;
+      if (priceA > priceB) {
+        comparison = 1;
+      } else if (priceA < priceB) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+
+    sortPrice(){
+
+      // console.log(this.state.filteredData);
+      var ok = this.state.filteredData.sort(this.compare);
+      // console.log(ok);
+      this.setState({filteredData : ok});
+    }
+
+
     componentWillMount() {
       this.getData();
     }
@@ -72,6 +94,9 @@ export default class ViewItem extends React.Component {
               onChange={this.handleInputChange}
             />
           </form>
+
+          <Button variant="primary" onClick={() => this.sortPrice()}>Sort Results by Price</Button>
+
           <div>
           <Table striped bordered hover variant="dark">
                     <thead>
