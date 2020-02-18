@@ -95,6 +95,7 @@ export default class ViewItem extends React.Component {
                     }
                     </tbody>
                 </Table>
+                <Button variant="primary" onClick={() => window.open("http://localhost:3000/displaycart","_self")}>View Cart</Button>
         </div>
         </div>
       );

@@ -100,7 +100,7 @@ userRoutes.route('/getreadyproducts/:name').get(function(req, res) {
 });
 
 // Getting all the DISPATCHED products listed by a particular vendor
-userRoutes.route('/getreadyproducts/:name').get(function(req, res) {
+userRoutes.route('/getdispatchedproducts/:name').get(function(req, res) {
     let name = req.params.name;
     Listeditem.find({"sellername":name , "dispatch_status" : "Dispatched"},function(err, vendors) {
         if (err) {
@@ -203,23 +203,36 @@ userRoutes.route('/cpwdcheck/:name').get(function(req,res){
 
 
 // Cancelling a product
-userRoutes.route('/cancelproduct/:productname').post(function(req, res) {
-    let item = req.params.productname;
-    Listeditem.updateOne({"productname":item},{ $set: {"dispatch_status": "Cancelled"} },function(err, vendors) {
+userRoutes.route('/cancelproduct').post(function(req, res) {
+    let cancelpkg = new Listeditem(req.body);
+    let item = cancelpkg.productname;
+    let seller = cancelpkg.sellername;
+    Listeditem.updateMany({"productname":item},{ $set: {"dispatch_status": "Cancelled"} },function(err, vendors) {
         if (err) throw err;
-        console.log("1 document deleted");
+        console.log("Listeditem updated");
+    });
+    Productbuy.updateMany({"productname":item, "sellername" : seller},{ $set: {"dispatch_status": "Cancelled"} },function(err, vendors) {
+        if (err) throw err;
+        console.log("Productbuy updated");
     });
 });
 
 
 // Dispatching a product
-userRoutes.route('/dispatchproduct/:productname').post(function(req, res) {
-    let item = req.params.productname;
-    var myquery = { "productname": item };
+userRoutes.route('/dispatchproduct').post(function(req, res) {
+    let cancelpkg = new Listeditem(req.body);
+    let item = cancelpkg.productname;
+    let seller = cancelpkg.sellername;
+    var myquery1 = { "productname" : item };
+    var myquery2 = { "productname": item, "sellername" : seller };
     var newvalues = { $set: {"dispatch_status": "Dispatched"} };
-    Listeditem.updateOne(myquery,newvalues,function(err, vendors) {
+    Listeditem.updateMany(myquery1,newvalues,function(err, vendors) {
         if (err) throw err;
-        console.log("1 document updated");
+        console.log("Listeditem updated");
+    });
+    Productbuy.updateMany({"productname":item, "sellername" : seller},{ $set: {"dispatch_status": "Dispatched"} },function(err, vendors) {
+        if (err) throw err;
+        console.log("Productbuy updated");
     });
 });
 
@@ -234,9 +247,15 @@ userRoutes.route('/vendororder').post(function(req, res) {
     }
     var myquery = {"productname": pro.productname, "sellername" : pro.sellername};
     var newvalues = {$set:  {"ordered_so_far" : pro.ordered_so_far, "dispatch_status" : pro.dispatch_status}};
-    Listeditem.updateOne(myquery,newvalues,function(err, vendors) {
+    Listeditem.updateMany(myquery,newvalues,function(err, vendors) {
         if (err) throw err;
-        console.log("1 document updated");
+        console.log("Listeditem updated");
+    });
+    var nesvalues = {$set : {"dispatch_status" : pro.dispatch_status}};
+    console.log(pro.dispatch_status);
+    Productbuy.updateMany(myquery,nesvalues,function(err, vendors) {
+        if (err) throw err;
+        console.log("Productbuy updated");
     });
 });
 

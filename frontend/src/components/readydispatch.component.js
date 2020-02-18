@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Table, Button, Alert } from 'react-bootstrap';
 import './global';
+import { runInThisContext } from 'vm';
 
 export default class ListeditemList extends Component {
     
@@ -26,8 +27,12 @@ export default class ListeditemList extends Component {
 
 
   cancelProduct(productname) {
-
-    axios.post('http://localhost:4000/cancelproduct/'+productname)
+    
+    const CancelPkg = {
+        sellername : this.state.tempvar,
+        productname : productname
+    }
+    axios.post('http://localhost:4000/cancelproduct',CancelPkg)
              .then(res => console.log(res.data));
 
     axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)
@@ -40,8 +45,13 @@ export default class ListeditemList extends Component {
   }
 
   dispatchProduct(productname) {
+    
+    const DispatchPkg = {
+        sellername : this.state.tempvar,
+        productname : productname
+    }
 
-    axios.post('http://localhost:4000/dispatchproduct/'+productname)
+    axios.post('http://localhost:4000/dispatchproduct',DispatchPkg)
              .then(res => console.log(res.data));
 
     axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)

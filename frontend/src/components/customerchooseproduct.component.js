@@ -78,19 +78,6 @@ export default class ChooseProduct extends Component {
 
     confirmOrder(qty)
     {
-        const Package = {
-            productname : this.state.productname,
-            sellername : this.state.sellername,
-            ordered_so_far : qty,
-            price : this.state.price,
-            minimum_quantity : this.state.minimum_quantity,
-            dispatch_status : this.state.dispatch_status,
-            pimage : this.state.pimage,
-            rating : this.state.rating
-        }
-        // console.log(this.state.ordered_so_far);
-        axios.post('http://localhost:4000/vendororder',Package)
-             .then(res => console.log(res.data));
 
         const Purchase = {
             productname : this.state.productname,
@@ -104,6 +91,20 @@ export default class ChooseProduct extends Component {
 
         axios.post('http://localhost:4000/addpurchase',Purchase)
             .then(res => console.log(res.data));
+
+        const Package = {
+            productname : this.state.productname,
+            sellername : this.state.sellername,
+            ordered_so_far : qty,
+            price : this.state.price,
+            minimum_quantity : this.state.minimum_quantity,
+            dispatch_status : this.state.dispatch_status,
+            pimage : this.state.pimage,
+            rating : this.state.rating
+        }
+        // console.log(this.state.ordered_so_far);
+        axios.post('http://localhost:4000/vendororder',Package)
+             .then(res => console.log(res.data));
         
     }
 

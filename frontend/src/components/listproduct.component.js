@@ -29,7 +29,12 @@ export default class ListeditemList extends Component {
 
   cancelProduct(productname) {
 
-    axios.post('http://localhost:4000/cancelproduct/'+productname)
+    const CancelPkg = 
+    {
+        sellername : this.state.tempvar,
+        productname : productname
+    }
+    axios.post('http://localhost:4000/cancelproduct',CancelPkg)
              .then(res => console.log(res.data));
 
     axios.get('http://localhost:4000/getproducts/'+this.state.tempvar)
