@@ -104,7 +104,9 @@ export default class ViewItem extends React.Component {
                             <th>Product</th>
                             <th>Seller</th>
                             <th>Price</th>
-                            <th>Quantity Left</th>
+                            <th>Sum of Ratings</th>
+                            <th>Number of Buyers</th>
+                            <th>Quantity Left</th>                       
                         </tr>
                     </thead>
                     <tbody>
@@ -115,6 +117,8 @@ export default class ViewItem extends React.Component {
                                     <td>{response.productname}</td>
                                     <td>{response.sellername}</td>
                                     <td>{response.price}</td>
+                                    <td>{response.sum_of_ratings}</td>
+                                    <td>{response.number_of_buyers}</td>
                                     <td>{response.minimum_quantity - response.ordered_so_far}</td>
                                     <Button variant="success" onClick={() => this.viewProduct(response.productname,response.sellername)}>See Product</Button>
                                 </tr>

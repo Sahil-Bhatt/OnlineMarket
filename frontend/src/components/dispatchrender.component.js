@@ -20,6 +20,7 @@ export default class ListeditemList extends Component {
         window.open("http://localhost:3000/","_self");
     }
 
+
     componentDidMount() {
         axios.get('http://localhost:4000/getdispatchedproducts/'+this.state.tempvar)
              .then(response => {
@@ -52,6 +53,8 @@ export default class ListeditemList extends Component {
                                     <td><img src={require(`${response.pimage}`)} width="100" height="70"></img></td>
                                     <td>{response.productname}</td>
                                     <td>{response.dispatch_status}</td>
+                                    <td>{response.sum_of_ratings}</td>
+                                    <td>{response.number_of_buyers}</td>
                                 </tr>
                             )
                         })

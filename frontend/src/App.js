@@ -13,6 +13,7 @@ import ChooseProduct from './components/customerchooseproduct.component';
 import ReadyDispatch from './components/readydispatch.component';
 import DispatchRender from './components/dispatchrender.component';
 import DisplayCart from './components/displaycart.component';
+import RateProduct from './components/rateproduct.component';
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/ready" component={ReadyDispatch}/>
         <Route path="/dispatchrender" component={DispatchRender}/>
         <Route path="/displaycart" component={DisplayCart}/>
+        <Route path="/rateproduct" component={RateProduct}/>
       </div>
     </Router>
   );

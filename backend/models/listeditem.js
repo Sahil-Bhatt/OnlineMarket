@@ -31,8 +31,19 @@ var userSchema = new mongoose.Schema({
 
     pimage: {
         type: String
-    }
+    },
 
+    number_of_buyers: {
+        type: Number
+    },
+
+    sum_of_ratings: {
+        type : Number
+    },
+
+    review: {
+        type : String
+    }
 
 });
 

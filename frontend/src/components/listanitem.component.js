@@ -16,7 +16,8 @@ export default class ListAnItem extends Component {
             dispatch_status: '',
             pimage: './product.png',
             rating: 0,
-            ordered_so_far: 0
+            ordered_so_far: 0,
+            review : ''
         }
 
         this.onChangeProductname = this.onChangeProductname.bind(this);
@@ -53,7 +54,10 @@ export default class ListAnItem extends Component {
             dispatch_status: "Listed",
             pimage: this.state.pimage,
             rating: 0,
-            ordered_so_far: 0
+            ordered_so_far: 0,
+            sum_of_ratings: 0,
+            number_of_buyers: 0,
+            review : ''
         }
 
         axios.post('http://localhost:4000/vendoraddproduct', newProduct)

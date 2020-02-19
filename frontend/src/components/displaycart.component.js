@@ -13,6 +13,12 @@ export default class DisplayCart extends Component {
         }
     }
 
+
+    rateProduct(productname,sellername)
+    {
+        window.location.href = "http://localhost:3000/rateproduct?pro="+productname+"&sell="+sellername;
+    }
+    
     getBack()
     {
         localStorage.setItem("uname", "Not Logged In");
@@ -56,6 +62,9 @@ export default class DisplayCart extends Component {
                                     <td>{response.productname}</td>
                                     <td>{response.sellername}</td>
                                     <td>{response.dispatch_status}</td>
+                                    <td>
+                                    <Button variant="success" onClick={() => this.rateProduct(response.productname,response.sellername)}>Rate this product</Button>
+                                    </td>
                                     <td>
                                     </td>
                                 </tr>

@@ -28,6 +28,14 @@ var userSchema = new mongoose.Schema({
 
     minimum_quantity: {
         type : Number
+    },
+
+    rating : {
+        type : Number
+    },
+
+    review : {
+        type : String
     }
 
 });

@@ -4,7 +4,7 @@ import { Table, Button, Alert } from 'react-bootstrap';
 import './global';
 import { number } from 'prop-types';
 
-export default class ChooseProduct extends Component {
+export default class RateProduct extends Component {
     
     constructor(props) {
         super(props);
@@ -25,13 +25,18 @@ export default class ChooseProduct extends Component {
             quantity : 0,
             number_of_buyers : 0,
             sum_of_ratings : 0,
-            currentrating : 'Unrated'
+            review : ''
         }
-        this.onChangeQty = this.onChangeQty.bind(this);
+        this.onChangeRating = this.onChangeRating.bind(this);
+        this.onChangeReview = this.onChangeReview.bind(this);
     }
 
-    onChangeQty(event) {
-        this.setState({ quantity: event.target.value });
+    onChangeRating(event) {
+        this.setState({ rating: event.target.value });
+    }
+
+    onChangeReview(event) {
+        this.setState({ review: event.target.value });
     }
 
     componentDidMount() {
@@ -67,68 +72,45 @@ export default class ChooseProduct extends Component {
         window.open("http://localhost:3000/","_self");
     }
 
-    cartAdd(){
+    rateProduct(){
         
-        var one = this.state.products[0].number_of_buyers;
-        var two = this.state.products[0].sum_of_ratings;
-        var three = "Unrated";
-        if(one == 0 || two == 0){
-            three = "Unrated";
-        }
-        else{
-            three = parseInt(two/one);
-        }        
-        console.log(parseInt(this.state.minimum_quantity));
-        console.log(this.state.quantity);
-        console.log(this.state.ordered_so_far);
-        var updateqty = parseInt(this.state.quantity) + parseInt(this.state.ordered_so_far);
-        var incrementbuyer = parseInt(this.state.number_of_buyers) + 1;
-        console.log(updateqty);
-        if(updateqty <= this.state.minimum_quantity)
+        var rate = parseInt(this.state.rating);
+        var rev = this.state.review;
+        var sumnow = parseInt(this.state.sum_of_ratings) + rate;
+        // console.log(updateqty);
+        if(rate <= 5 && rate >= 1)
         {
-            this.setState({ ordered_so_far : updateqty, number_of_buyers: incrementbuyer, currentrating :three });
-            if(window.confirm("Confirm Order ?"))
+            this.setState({ rating : rate, review: rev, sum_of_ratings : sumnow });
+            if(window.confirm("Confirm Rating ?"))
             {
-                this.confirmOrder(updateqty,incrementbuyer);
+                console.log(rev);
+                this.confirmRating(rate,sumnow,rev);
             }
         }
         else
         {
-            window.alert("Please enter a quantity less than or equal to quantity left");
+            window.alert("Please enter a rating between 1 and 5");
         }
 
     }
 
-    confirmOrder(qty,incrementbuyer)
+    confirmRating(rate,sumofrates,rev)
     {
-
-        const Purchase = {
-            productname : this.state.productname,
-            sellername : this.state.sellername,
-            buyername : this.state.tempvar,
-            pimage : this.state.pimage,
-            dispatch_status : this.state.dispatch_status,
-            quantity : this.state.quantity,
-            minimum_quantity : this.state.minimum_quantity
-        }
-
-        axios.post('http://localhost:4000/addpurchase',Purchase)
-            .then(res => console.log(res.data));
 
         const Package = {
             productname : this.state.productname,
             sellername : this.state.sellername,
-            ordered_so_far : qty,
+            ordered_so_far : this.state.ordered_so_far,
             price : this.state.price,
             minimum_quantity : this.state.minimum_quantity,
             dispatch_status : this.state.dispatch_status,
             pimage : this.state.pimage,
-            rating : this.state.rating,
-            number_of_buyers : incrementbuyer,
-            sum_of_ratings : this.state.sum_of_ratings
+            rating : rate,
+            number_of_buyers : this.state.number_of_buyers,
+            sum_of_ratings : sumofrates,
+            review : rev,
         }
-        // console.log(this.state.ordered_so_far);
-        axios.post('http://localhost:4000/vendororder',Package)
+        axios.post('http://localhost:4000/reviewproduct/'+localStorage.getItem("uname"),Package)
              .then(res => console.log(res.data));
         
     }
@@ -140,10 +122,9 @@ export default class ChooseProduct extends Component {
                 &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
                 <p>Product : {this.state.productname}</p>
                 <p>Vendor : {this.state.sellername}</p>
-                <p>Average vendor rating : {this.state.currentrating}</p>
-                <input type="number" value={this.state.quantity} onChange={this.onChangeQty}/> 
-                <Button variant="success" onClick={() => this.cartAdd()}>Add to Cart</Button>
-                <Button variant="primary" onClick={() => window.open("http://localhost:3000/displaycart","_self")}>View Cart</Button>
+                <input type="number" placeholder="rating" onChange={this.onChangeRating}/>
+                <input type="text" placeholder="review" onChange={this.onChangeReview}/> 
+                <Button variant="success" onClick={() => this.rateProduct()}>Rate Product</Button>
             </div>
         )
     }
