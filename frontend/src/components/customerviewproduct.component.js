@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import './global';
-import { ListGroup, ListGroupItem, Card, Table, Button} from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Card, Table, Button ,Dropdown} from 'react-bootstrap';
 // import React, { Component } from 'react';
 export default class ViewItem extends React.Component {
     state = {
@@ -28,7 +28,7 @@ export default class ViewItem extends React.Component {
 
     getBack()
     {
-        localStorage.setItem("uname", "Not Logged In");
+        localStorage.setItem("cname", "Not Logged In");
         window.alert("You've been logged out");
         window.open("http://localhost:3000/","_self");
     }
@@ -54,7 +54,7 @@ export default class ViewItem extends React.Component {
         });
     };
 
-    compare(a, b) {
+    comparePrice(a, b) {
       const priceA = parseInt(a.price);
       const priceB = parseInt(b.price);
     
@@ -68,10 +68,26 @@ export default class ViewItem extends React.Component {
     }
 
     sortPrice(){
+      var ok = this.state.filteredData.sort(this.comparePrice);
+      this.setState({filteredData : ok});
+    }
 
-      // console.log(this.state.filteredData);
-      var ok = this.state.filteredData.sort(this.compare);
-      // console.log(ok);
+
+    compareQty(a, b) {
+      const priceA = parseInt(a.minimum_quantity - a.ordered_so_far);
+      const priceB = parseInt(b.minimum_quantity - b.ordered_so_far);
+    
+      let comparison = 0;
+      if (priceA > priceB) {
+        comparison = 1;
+      } else if (priceA < priceB) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+
+    sortQty(){
+      var ok = this.state.filteredData.sort(this.compareQty);
       this.setState({filteredData : ok});
     }
 
@@ -83,7 +99,7 @@ export default class ViewItem extends React.Component {
     render() {
       return (
         <div className="searchForm">
-            <p>Logged In as: {localStorage.getItem("uname")}</p>
+            <p>Logged In as: {localStorage.getItem("cname")}</p>
             <Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
             <br></br>
             <br></br>
@@ -94,9 +110,18 @@ export default class ViewItem extends React.Component {
               onChange={this.handleInputChange}
             />
           </form>
+            <br></br>
+            <Dropdown>
+            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+              Sort Results by
+            </Dropdown.Toggle>
 
-          <Button variant="primary" onClick={() => this.sortPrice()}>Sort Results by Price</Button>
-
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => this.sortPrice()}>Price</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.sortQty()}>Quantity left</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <br></br>
           <div>
           <Table striped bordered hover variant="dark">
                     <thead>

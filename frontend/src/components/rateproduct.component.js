@@ -13,7 +13,8 @@ export default class RateProduct extends Component {
         var urlparams = new URLSearchParams(queryString);
         this.state = {
             products: [],
-            tempvar:localStorage.getItem("uname"),
+            reviews : [],
+            tempvar:localStorage.getItem("cname"),
             productname : urlparams.get('pro'),
             sellername : urlparams.get('sell'),
             price : 0,
@@ -25,7 +26,8 @@ export default class RateProduct extends Component {
             quantity : 0,
             number_of_buyers : 0,
             sum_of_ratings : 0,
-            review : ''
+            review : '',
+            currentrating : 0
         }
         this.onChangeRating = this.onChangeRating.bind(this);
         this.onChangeReview = this.onChangeReview.bind(this);
@@ -58,33 +60,78 @@ export default class RateProduct extends Component {
                          number_of_buyers : response.data[0].number_of_buyers,
                          sum_of_ratings : response.data[0].sum_of_ratings
                         });
+                // this.setrating(response.data[0].sum_of_ratings,response.data[0].number_of_buyers);
                  console.log(response.data);
              })
              .catch(function(error) {
                  console.log(error);
              })
+
+             axios.get('http://localhost:4000/getreviews/'+this.state.sellername)
+            .then(response => {
+                this.setState({reviews: response.data});
+                this.getAvgRating(this.state.reviews);
+                console.log(this.state.reviews);
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
+    }
+
+    setrating(sor,nob){
+        if(sor == 0 || nob ==0){
+            this.setState({currentrating : 0});
+        }
+        else
+        {
+            console.log(parseInt(nob));
+            console.log(sor);
+            let val = parseInt(sor)/parseInt(nob);
+            this.setState({currentrating : sor});
+        }
+    }
+
+    getAvgRating(review)
+    {
+        let arrlength = review.length;
+        console.log(review);
+        let avgval = 0;
+        let i =0;
+        for(i=0;i<arrlength;i++)
+        {
+            avgval += review[i].rating;
+        }
+        console.log(avgval);
+        if(arrlength !=0)
+        {
+            avgval/= arrlength;
+        }
+        else{
+            avgval = 0;
+        }
+        this.setState({currentrating : avgval});
     }
 
     getBack()
     {
-        localStorage.setItem("uname", "Not Logged In");
+        localStorage.setItem("cname", "Not Logged In");
         window.alert("You've been logged out");
         window.open("http://localhost:3000/","_self");
     }
 
     rateProduct(){
         
+        var incrementbuyer = parseInt(this.state.number_of_buyers) + 1;
         var rate = parseInt(this.state.rating);
         var rev = this.state.review;
         var sumnow = parseInt(this.state.sum_of_ratings) + rate;
-        // console.log(updateqty);
         if(rate <= 5 && rate >= 1)
         {
-            this.setState({ rating : rate, review: rev, sum_of_ratings : sumnow });
+            this.setState({ review: rev, sum_of_ratings : sumnow });
             if(window.confirm("Confirm Rating ?"))
             {
                 console.log(rev);
-                this.confirmRating(rate,sumnow,rev);
+                this.confirmRating(rate,sumnow,rev,incrementbuyer);
             }
         }
         else
@@ -94,7 +141,7 @@ export default class RateProduct extends Component {
 
     }
 
-    confirmRating(rate,sumofrates,rev)
+    confirmRating(rate,sumofrates,rev,incrementbuyer)
     {
 
         const Package = {
@@ -106,13 +153,21 @@ export default class RateProduct extends Component {
             dispatch_status : this.state.dispatch_status,
             pimage : this.state.pimage,
             rating : rate,
-            number_of_buyers : this.state.number_of_buyers,
-            sum_of_ratings : sumofrates,
-            review : rev,
+            number_of_buyers : incrementbuyer,
+            sum_of_ratings : sumofrates
         }
-        axios.post('http://localhost:4000/reviewproduct/'+localStorage.getItem("uname"),Package)
+        axios.post('http://localhost:4000/reviewproduct/'+localStorage.getItem("cname"),Package)
              .then(res => console.log(res.data));
         
+        const Review = {
+            sellername : this.state.sellername,
+            rating : rate,
+            review : rev,
+            buyername : localStorage.getItem("cname")
+        }
+
+        axios.post('http://localhost:4000/addreview',Review)
+             .then(res => console.log(res.data));
     }
 
     render() {
@@ -122,6 +177,7 @@ export default class RateProduct extends Component {
                 &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
                 <p>Product : {this.state.productname}</p>
                 <p>Vendor : {this.state.sellername}</p>
+                <p>Average product rating : {this.state.currentrating}</p>
                 <input type="number" placeholder="rating" onChange={this.onChangeRating}/>
                 <input type="text" placeholder="review" onChange={this.onChangeReview}/> 
                 <Button variant="success" onClick={() => this.rateProduct()}>Rate Product</Button>

@@ -41,7 +41,7 @@ export default class VendorLogin extends Component {
                 console.log(global.user);
                 global.user = this.state.username;
                 console.log(global.user);
-                localStorage.setItem("uname", global.user );
+                localStorage.setItem("vname", global.user );
                 window.open('http://localhost:3000/listproduct',"_self");
         }
         else
