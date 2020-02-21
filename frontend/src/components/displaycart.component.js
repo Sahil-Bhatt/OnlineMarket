@@ -62,6 +62,8 @@ export default class DisplayCart extends Component {
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
                 &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
+                &nbsp;<Button variant="primary" onClick={() => window.open("http://localhost:3000/viewitems","_self")}>View Products</Button>
+                <br></br><br></br>
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
