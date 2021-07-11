@@ -9,7 +9,8 @@ export default class ListeditemList extends Component {
         super(props);
         this.state = {
             products: [],
-            tempvar:localStorage.getItem("uname")
+            reviews: [],
+            tempvar:localStorage.getItem("vname")
         }
     }
 
@@ -24,11 +25,19 @@ export default class ListeditemList extends Component {
         // global.user = Request.QueryString["myvar"];
         console.log(global.user);
         // this.setState({tempvar:global.user});
+        axios.get('http://localhost:4000/getreviews/'+localStorage.getItem("vname"))
+        .then(response => {
+            this.setState({reviews: response.data});
+            console.log(this.state.reviews);
+        })
+        .catch(function(error) {
+            console.log(error);
+        })
     }
 
     getBack()
     {
-        localStorage.setItem("uname", "Not Logged In");
+        localStorage.setItem("vname", "Not Logged In");
         window.alert("You've been logged out");
         window.open("http://localhost:3000/","_self");
     }
@@ -92,6 +101,31 @@ export default class ListeditemList extends Component {
                 <Button variant="warning" onClick={() => window.open("http://localhost:3000/listme","_self")}>List a new item </Button>
                 &nbsp;<Button variant="danger" onClick={() => window.open("http://localhost:3000/ready","_self")}>View Ready to Dispatch items</Button>
                 <Button variant="success" onClick={() => window.open("http://localhost:3000/dispatchrender","_self")}>View Dispatched Items</Button>
+                <br></br>
+                <br></br>
+                <p>Vendor Reviews</p>
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>Buyer</th>
+                            <th>Review</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    { 
+                        this.state.reviews.map((response, i) => {
+                            return (
+                                <tr>
+                                    <td>{response.buyername}</td>
+                                    <td>{response.review}</td>
+                                    <td>{response.rating}</td>
+                                </tr>
+                            )
+                        })
+                    }
+                    </tbody>
+                </Table>
             </div>
         )
     }

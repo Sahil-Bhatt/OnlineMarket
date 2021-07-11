@@ -41,6 +41,7 @@ export default class CreateCustomer extends Component {
             username: '',
             password: ''
         });
+
     }
 
     render() {

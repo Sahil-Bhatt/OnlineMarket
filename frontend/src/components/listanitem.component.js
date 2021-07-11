@@ -47,7 +47,7 @@ export default class ListAnItem extends Component {
         e.preventDefault();
 
         const newProduct = {
-            sellername: localStorage.getItem("uname"),
+            sellername: localStorage.getItem("vname"),
             productname: this.state.productname,
             price: this.state.price,
             minimum_quantity: this.state.minimum_quantity,
@@ -72,16 +72,23 @@ export default class ListAnItem extends Component {
 
     getBack()
     {
-        localStorage.setItem("uname", "Not Logged In");
+        localStorage.setItem("vname", "Not Logged In");
         window.alert("You've been logged out");
         window.open("http://localhost:3000/","_self");
+    }
+
+    gotoList()
+    {
+        window.open("http://localhost:3000/listproduct","_self");
     }
 
     render() {
         return (
             <div>
-                <p>Logged In as: {localStorage.getItem("uname")}</p>
+                <p>Logged In as: {localStorage.getItem("vname")}</p>
                 &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
+                &nbsp;<Button variant="warning" onClick={() => this.gotoList()}>View Items Listed</Button>
+
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Product: </label>

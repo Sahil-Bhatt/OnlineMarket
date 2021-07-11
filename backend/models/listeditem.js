@@ -39,10 +39,6 @@ var userSchema = new mongoose.Schema({
 
     sum_of_ratings: {
         type : Number
-    },
-
-    review: {
-        type : String
     }
 
 });

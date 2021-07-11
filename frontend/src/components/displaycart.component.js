@@ -9,19 +9,39 @@ export default class DisplayCart extends Component {
         super(props);
         this.state = {
             products: [],
-            tempvar:localStorage.getItem("uname")
+            tempvar:localStorage.getItem("cname"),
+            ordertemp : 0
         }
     }
 
 
-    rateProduct(productname,sellername)
+    rateProduct(productname,sellername,dispatch_status)
     {
-        window.location.href = "http://localhost:3000/rateproduct?pro="+productname+"&sell="+sellername;
+        if(dispatch_status == "Dispatched")
+        {
+            window.location.href = "http://localhost:3000/rateproduct?pro="+productname+"&sell="+sellername;
+        }
+        else
+        {
+            window.alert("Hello! " + localStorage.getItem("cname") + ". Please review us once your order is dispatched. We highly value customer feedback");
+        }
     }
+
+    editOrder(productname,sellername,dispatch_status)
+    {
+        if(dispatch_status == "Listed")
+        {
+            window.location.href = "http://localhost:3000/editorder?pro="+productname+"&sell="+sellername+"&disp="+dispatch_status;
     
+        }
+        else{
+            window.alert("Sorry, your order details cannot be edited now");
+        }
+    }
+
     getBack()
     {
-        localStorage.setItem("uname", "Not Logged In");
+        localStorage.setItem("cname", "Not Logged In");
         window.alert("You've been logged out");
         window.open("http://localhost:3000/","_self");
     }
@@ -34,9 +54,7 @@ export default class DisplayCart extends Component {
              .catch(function(error) {
                  console.log(error);
              })
-        // global.user = Request.QueryString["myvar"];
         console.log(global.user);
-        // this.setState({tempvar:global.user});
     }
 
     render() {
@@ -44,6 +62,8 @@ export default class DisplayCart extends Component {
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
                 &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
+                &nbsp;<Button variant="primary" onClick={() => window.open("http://localhost:3000/viewitems","_self")}>View Products</Button>
+                <br></br><br></br>
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
@@ -63,9 +83,10 @@ export default class DisplayCart extends Component {
                                     <td>{response.sellername}</td>
                                     <td>{response.dispatch_status}</td>
                                     <td>
-                                    <Button variant="success" onClick={() => this.rateProduct(response.productname,response.sellername)}>Rate this product</Button>
+                                    <Button variant="warning" onClick={() => this.editOrder(response.productname,response.sellername,response.dispatch_status)}>Edit this Order</Button>
                                     </td>
                                     <td>
+                                    <Button variant="success" onClick={() => this.rateProduct(response.productname,response.sellername,response.dispatch_status)}>Rate this product</Button>
                                     </td>
                                 </tr>
                             )

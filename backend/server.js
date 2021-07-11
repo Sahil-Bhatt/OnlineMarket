@@ -11,6 +11,7 @@ let Vendor = require('./models/vendor');
 let Customer = require('./models/customer');
 let Listeditem = require('./models/listeditem');
 let Productbuy = require('./models/productbuy');
+let Review = require('./models/review');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -266,7 +267,7 @@ userRoutes.route('/reviewproduct/:name').post(function(req, res) {
     console.log(pro);
     let buyername = req.params.name;
     var myquery1 = {"productname": pro.productname, "sellername" : pro.sellername};
-    var newvalues = {$set:  {"sum_of_ratings" : pro.sum_of_ratings}};
+    var newvalues = {$set:  {"number_of_buyers": pro.number_of_buyers,"sum_of_ratings" : pro.sum_of_ratings}};
     Listeditem.updateMany(myquery1,newvalues,function(err, vendors) {
         if (err) throw err;
         console.log("Listeditem updated");
@@ -282,7 +283,51 @@ userRoutes.route('/reviewproduct/:name').post(function(req, res) {
     });
 });
 
+// Adding a new review
+userRoutes.route('/addreview').post(function(req, res) {
+    let item = new Review(req.body);
+    item.save()
+        .then(item => {
+            res.status(200).json({'Review': 'Review added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('Error');
+        });
+});
 
+// Getting all the reviews for a particular vendor
+userRoutes.route('/getreviews/:name').get(function(req, res) {
+    let name = req.params.name;
+    Review.find({"sellername":name},function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(vendors);
+        }
+    });
+});
+
+// Updating customer's order
+userRoutes.route('/updateorder').post(function(req, res) {
+    let pro = new Productbuy(req.body);
+    console.log(pro);
+    // if(pro.ordered_so_far == pro.minimum_quantity)
+    // {
+    //     pro.dispatch_status = "Ready";
+    // }
+    var myquery = {"productname": pro.productname, "sellername" : pro.sellername, "buyername" : pro.buyername};
+    var nesvalues = {$set : {"quantity": pro.quantity ,"dispatch_status" : pro.dispatch_status}};
+    // var newvalues = {$set:  {"ordered_so_far" : pro.ordered_so_far, "dispatch_status" : pro.dispatch_status, "number_of_buyers" : pro.number_of_buyers}};
+    Productbuy.updateMany(myquery,newvalues,function(err, vendors) {
+        if (err) throw err;
+        console.log("Listeditem updated");
+    });
+    console.log(pro.dispatch_status);
+    Listeditem.updateMany(myquery,nesvalues,function(err, vendors) {
+        if (err) throw err;
+        console.log("Productbuy updated");
+    });
+});
 
 app.use('/', userRoutes);
 

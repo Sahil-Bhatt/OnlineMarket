@@ -9,13 +9,13 @@ export default class ListeditemList extends Component {
         super(props);
         this.state = {
             products: [],
-            tempvar:localStorage.getItem("uname")
+            tempvar:localStorage.getItem("vname")
         }
     }
 
     getBack()
     {
-        localStorage.setItem("uname", "Not Logged In");
+        localStorage.setItem("vname", "Not Logged In");
         window.alert("You've been logged out");
         window.open("http://localhost:3000/","_self");
     }
@@ -37,6 +37,7 @@ export default class ListeditemList extends Component {
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
                 &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
+                <Button variant="primary" onClick={() => window.open("http://localhost:3000/listproduct","_self")}>Vendor Home</Button>
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
