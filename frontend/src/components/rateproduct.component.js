@@ -175,7 +175,6 @@ export default class RateProduct extends Component {
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
                 &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
-                &nbsp;<Button variant="primary" onClick={() => window.open("http://localhost:3000/viewitems","_self")}>View Products</Button>
                 <p>Product : {this.state.productname}</p>
                 <p>Vendor : {this.state.sellername}</p>
                 <p>Average product rating : {this.state.currentrating}</p>

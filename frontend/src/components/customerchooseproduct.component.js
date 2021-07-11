@@ -178,12 +178,10 @@ export default class ChooseProduct extends Component {
             <div>
                 <p>Logged In as: {this.state.tempvar}</p>
                 &nbsp;<Button variant="danger" onClick={() => this.getBack()}>Logout</Button>
-                &nbsp;<Button variant="warning" onClick={() => window.open("http://localhost:3000/viewitems","_self")}>View Products</Button>
-
                 <p>Product : {this.state.productname}</p>
                 <p>Vendor : {this.state.sellername}</p>
                 <p>Quantity Left : {this.state.qtyleft}</p>
-                <p>Average rating of the vendor : {this.state.currentrating}</p>
+                <p>Average vendor rating : {this.state.currentrating}</p>
                 
                 <input type="number" value={this.state.quantity} onChange={this.onChangeQty}/> 
                 <Button variant="success" onClick={() => this.cartAdd()}>Add to Cart</Button>
